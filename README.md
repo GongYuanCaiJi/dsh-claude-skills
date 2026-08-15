@@ -20,7 +20,7 @@
   （含 AEO 引擎优化）、监管与质量、C-level 顾问（完整 C-suite）、研究（litreview /
   grants / patent / deep-research 等）、生产力（capture / reflect / handoff /
   deep-work / meetings）、金融、商业运营与增长、Markdown→HTML 等 18 个领域。
-- 🐍 **644 个 Python 工具**：全部 stdlib-only、零 pip 依赖，任何有 Python 的地方都能跑。
+- 🐍 **658 个 Python 工具**（规范树内 .py 文件实测；上游 marketplace 宣称 644）：绝大多数 stdlib-only；少数技能需要 pip 依赖（PyYAML、torch/onnx、PIL、requests/bs4/pandas、firecrawl，见对应技能说明）。
 - 🧩 **SKILL.md 原生格式**：每个技能是 `<name>/SKILL.md` 目录包（正文 + scripts +
   references + assets），dsh 按标准发现。
 - 🔒 **自带 Skill Security Auditor**：安装前扫描技能的命令注入 / 数据外送 / 提示注入。
@@ -49,7 +49,7 @@ dsh plugin --profile <name> add github:GongYuanCaiJi/dsh-claude-skills
 ```bash
 git clone https://github.com/GongYuanCaiJi/dsh-claude-skills.git
 cd dsh-claude-skills && npm install
-dsh plugin --profile <name> add ./dsh-claude-skills
+dsh plugin --profile <name> add .
 ```
 
 ### 使用
@@ -64,7 +64,7 @@ dsh 的发现规则是单层 `<root>/<name>/SKILL.md`，因此每个领域目录
   本插件实际注册 **361** 个（88 个注册根，穷举覆盖，测试强制）；其中 2 个
   （`markdown-html/skills/design-system`、`md-slides`）的 frontmatter 含 dsh YAML
   解析器不接受的写法（上游数据瑕疵，逐字保留不修），dsh 会在发现时警告并跳过，
-  所以**可用技能 358** 个。
+  所以**可用技能 359** 个。
 - 上游另有给其他 agent 的转换树（`.codex/`、`.gemini/`、`.hermes/`、`.vibe/`），
   本插件不注册它们 —— 那是给别的工具用的副本，注册会造成目录重复。
 - 上游的 Claude Code 专属机制（`commands/` 斜杠命令、`.claude/agents/` 子代理、
@@ -93,7 +93,7 @@ MIT。技能内容 © 2025 [Alireza Rezvani](https://github.com/alirezarezvani/c
   advisory (full C-suite), research (litreview / grants / patent /
   deep-research…), productivity (capture / reflect / handoff / deep-work /
   meetings), finance, business operations & growth, markdown→HTML, and more.
-- 🐍 **644 Python tools**: stdlib-only, zero pip dependencies, run anywhere Python runs.
+- 🐍 **658 Python tools** (counted from `.py` files in the canonical tree; upstream marketplace claims 644): mostly stdlib-only; a few skills need pip dependencies (PyYAML, torch/onnx, PIL, requests/bs4/pandas, firecrawl — see each skill's docs).
 - 🧩 **Native SKILL.md format**: each skill is a `<name>/SKILL.md` bundle
   (body + scripts + references + assets), discovered the dsh-standard way.
 - 🔒 **Skill Security Auditor included**: scan skills for command injection /
@@ -125,7 +125,7 @@ Local path (run `npm install` first):
 ```bash
 git clone https://github.com/GongYuanCaiJi/dsh-claude-skills.git
 cd dsh-claude-skills && npm install
-dsh plugin --profile <name> add ./dsh-claude-skills
+dsh plugin --profile <name> add .
 ```
 
 ### Usage
@@ -140,7 +140,7 @@ directory is a registered root. Call any skill by name after install.
   SKILL.md files). This plugin registers **361** of them (88 roots, exhaustive
   coverage enforced by the test suite); 2 (`markdown-html/skills/design-system`,
   `md-slides`) have frontmatter DSH's YAML parser rejects (upstream data quirk,
-  kept verbatim — DSH warns and skips them at discovery), so **358 are usable**.
+  kept verbatim — DSH warns and skips them at discovery), so **359 are usable**.
 - Cross-tool conversion trees shipped by upstream (`.codex/`, `.gemini/`,
   `.hermes/`, `.vibe/`) are kept verbatim but **not registered** — they are
   copies for other agents and would duplicate the catalog.
