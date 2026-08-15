@@ -4,8 +4,9 @@
 [`alirezarezvani/claude-skills`](https://github.com/alirezarezvani/claude-skills).
 All skill content (SKILL.md bodies, Python tools, references, templates,
 docs) is preserved **verbatim** from the pinned upstream revision; only the
-DSH plugin layer (package.json, cordis.patch.yml), this repo's README, and
-the LICENSE header were added by the port. See [README.md](./README.md).
+DSH plugin layer (package.json, package-lock.json, cordis.patch.yml,
+test/plugin.test.mjs), this repo's README, THIRD_PARTY_NOTICES.md itself,
+and the LICENSE header were added by the port. See [README.md](./README.md).
 
 ## Upstream
 
@@ -37,8 +38,10 @@ curl -L https://codeload.github.com/alirezarezvani/claude-skills/tar.gz/aa8d7788
 ## Verbatim files — SHA-256 spot checks
 
 The following files are shipped byte-for-byte from upstream (same revision
-above). `README.md` / `LICENSE` / `.gitignore` / `.github/workflows/` are the
-only intentional deviations (see below).
+above). `README.md` / `LICENSE` / `.gitignore` / `.github/workflows/` are
+intentional deviations, and `package.json` / `package-lock.json` /
+`cordis.patch.yml` / `test/plugin.test.mjs` / `THIRD_PARTY_NOTICES.md` are
+port-added files that do not exist upstream (see below).
 
 | SHA-256 | File |
 |---|---|
@@ -70,5 +73,8 @@ byte-identical to the pinned revision.
 | `README.md` | Replaced with the port's own bilingual README | Upstream README documents the upstream repo's own install paths (`/plugin marketplace add alirezarezvani/...`); keeping it would mislead dsh users. Upstream hash pinned above. |
 | `LICENSE` | Added port copyright line `Copyright (c) 2026 GongYuanCaiJi (dsh port)` | MIT notice requires the port's copyright alongside the upstream's; pure copyright lines keep GitHub license detection at `MIT`. |
 | `package.json` | Created by the port (upstream has **no** `package.json`) | Playbook Y2 (diff upstream scripts one by one) is vacuous here — nothing to diff. The port adds only a `test` script (no build step exists, so `prepare`/`prepublishOnly`/`types` do not apply; `dsh plugin add` from git needs no build). Rationale recorded in the delivery report #37. |
+| `package-lock.json` | Created by the port (`npm install` generated; upstream has no `package.json`, hence no lockfile) | Reproducible `npm ci` installs for clean-clone verification (playbook machine check 1). |
+| `test/plugin.test.mjs` | Created by the port (upstream has **no** `test/` directory) | Verifies the dsh plugin install contract (package.json shape, patch roots, skill discoverability, frontmatter validity) — the `npm test` that machine check 1 runs. |
+| `THIRD_PARTY_NOTICES.md` | Created by the port (this file) | Playbook N4: pins the upstream revision and hashes so the verbatim claim is self-verifiable. |
 | `.gitignore` | Playbook safety lines merged at top | Production-line requirement (`node_modules/`, `dist/`, `.serena/`, `*.log`, `.env*`, `*.tgz`, `.upstream/`); upstream's own rules kept below. |
 | `.github/workflows/` | Not shipped (12 files) | Upstream CI is wired to the upstream repo's own secrets/backends: `release.yml` auto-tags and auto-creates GitHub Releases on every CHANGELOG-touching push to `main`, `sync-codex-skills.yml` rewrites `main` content, `claude-*` workflows require the upstream maintainer's Claude Code subscription (OIDC). Running them on this repo would auto-publish the upstream's release versions under this org — misleading attribution. Skill content is unaffected. |
