@@ -69,7 +69,7 @@ test('package.json declares the dsh plugin contract', () => {
   assert.ok(Array.isArray(pkg.keywords) && pkg.keywords.includes('dsh-plugin'), 'dsh-plugin keyword required');
   assert.ok(pkg.scripts?.test, 'test script required for clean-clone installs');
   assert.equal(pkg.dsh?.bundle?.patch, './cordis.patch.yml');
-  // dsh 依賴必須釘死確切版本（playbook Y4：^0.1.0-rc.6 會隨 0.x 脫鉤）
+  // dsh 依赖必须钉死确切版本（playbook Y4：^0.1.0-rc.6 会随 0.x 脱钩）
   assert.equal(pkg.dependencies?.['@deepseek-ai/dsh-skill-filesystem'], '0.1.0-rc.6',
     'dsh-skill-filesystem must be pinned to the exact next-tag version');
 });
@@ -109,12 +109,40 @@ test('every registered skill root yields only dsh-discoverable, valid skills', (
       registered.push({ name, file: path.join(dir, name, 'SKILL.md') });
     }
   }
-  assert.ok(registered.length >= 350, `expected >=350 registered skills, got ${registered.length}`);
 
-  // 上游資料瑕疵（100% 原樣複製，不改）：這兩個 frontmatter 在 description 的 plain
-  // scalar 內含 `: `（如 "Precedence: project"），dsh 用的 yaml 套件（skill-filesystem
-  // README 明載）會整條拒絕 → 這兩個 skill 在 dsh 目錄中消失並警告。清單釘死，數量
-  // 有界；若上游修好，此清單要跟著縮。
+  // 穷举覆盖契约：规范树里每一份 SKILL.md（除一个测试夹具）都必须能从某个
+  // 注册根单层发现。patch 漏注册任何技能都会在这里炸 —— 之前正是这样漏掉了
+  // engineering/minimalist、engineering/strict-api、loop-library。
+  const CROSS_TOOL = new Set(['.codex', '.gemini', '.hermes', '.vibe']);
+  const FIXTURE = 'engineering/skills/skill-tester/assets/sample-skill/SKILL.md';
+  const canonical = [];
+  (function walk(dir) {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name === '.git') continue;
+      if (e.isSymbolicLink()) continue; // 跨工具转换树的 symlink，非规范内容
+      if (CROSS_TOOL.has(e.name)) continue;
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) walk(full);
+      else if (e.name === 'SKILL.md') canonical.push(full);
+    }
+  })(repoRoot);
+  const canonicalSet = new Set(canonical);
+  assert.equal(canonical.length, 362, `canonical tree must hold 362 SKILL.md, got ${canonical.length}`);
+
+  const registeredSet = new Set(registered.map((r) => r.file));
+  assert.equal(registered.length, 361, `expected 361 registered skills, got ${registered.length}`);
+  for (const rel of canonical) {
+    if (rel === path.join(repoRoot, FIXTURE)) {
+      assert.ok(!registeredSet.has(rel), 'test fixture must NOT be registered');
+    } else {
+      assert.ok(registeredSet.has(rel), `every canonical SKILL.md must be registered: ${path.relative(repoRoot, rel)}`);
+    }
+  }
+
+  // 上游数据瑕疵（100% 原样复制，不改）：这两个 frontmatter 在 description 的 plain
+  // scalar 内含 `: `（如 "Precedence: project"），dsh 用的 yaml 套件（skill-filesystem
+  // README 明载）会整条拒绝 → 这两个 skill 在 dsh 目录中消失并警告。清单钉死，数量
+  // 有界；若上游修好，此清单要跟着缩。
   const KNOWN_BAD_FRONTMATTER = new Set([
     'markdown-html/skills/design-system/SKILL.md',
     'markdown-html/skills/md-slides/SKILL.md',
@@ -133,9 +161,9 @@ test('every registered skill root yields only dsh-discoverable, valid skills', (
       bad.push(`${rel} :: ${err.message.split('\n')[0]}`);
       continue;
     }
-    // 上游不保證 frontmatter name 等於目錄名（實查一處：playwright-pro/skills/pw 的
-    // frontmatter name 是 playwright-pro）—— dsh 契約只要求 name 為 kebab-case 且
-    // description 存在；100% 原樣複製規則禁止我們改上游內容，所以測契約不測目錄名。
+    // 上游不保证 frontmatter name 等于目录名（实查一处：playwright-pro/skills/pw 的
+    // frontmatter name 是 playwright-pro）—— dsh 契约只要求 name 为 kebab-case 且
+    // description 存在；100% 原样复制规则禁止我们改上游内容，所以测契约不测目录名。
     assert.match(fm.name, /^[a-z0-9]+(-[a-z0-9]+)*$/, `name must be kebab-case: ${file}`);
     assert.equal(typeof fm.description, 'string', `description must be a string: ${file}`);
     assert.ok(fm.description.length > 0, `description must be non-empty: ${file}`);

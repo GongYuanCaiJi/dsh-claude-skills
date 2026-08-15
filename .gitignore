@@ -1,4 +1,4 @@
-# dsh 移植產線安全規則（deepseek-harness port-playbook，票 #27）
+# dsh 移植产线安全规则（deepseek-harness port-playbook，票 #27）
 .upstream/
 node_modules/
 dist/

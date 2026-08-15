@@ -36,9 +36,9 @@ and identify the top 3 scalability risks.
 
 ### 安装
 
-仓库未发布到 npm，用 GitHub 安装（首次在全新 profile 上可能被 pnpm 的 build-script
-白名单拦截 `prepare` 构建 —— `dsh` 会打印要补到该 profile 的 `pnpm-workspace.yaml`
-`allowBuilds` 下的确切 key，补上后重跑同一条命令即可）：
+仓库未发布到 npm，用 GitHub 安装（git 安装可能触发 pnpm 的 build-script 白名单；
+若被拦截，`dsh` 会打印要补到该 profile 的 `pnpm-workspace.yaml` `allowBuilds`
+下的确切 key，补上后重跑同一条命令即可。本包无构建步骤，多数环境不需要）：
 
 ```bash
 dsh plugin --profile <name> add github:GongYuanCaiJi/dsh-claude-skills
@@ -60,12 +60,15 @@ dsh 的发现规则是单层 `<root>/<name>/SKILL.md`，因此每个领域目录
 
 ### 已知边界
 
+- 数量口径：**362** 是上游宣称的技能数（本仓库规范树里也确实有 362 份 SKILL.md）。
+  本插件实际注册 **361** 个（88 个注册根，穷举覆盖，测试强制）；其中 2 个
+  （`markdown-html/skills/design-system`、`md-slides`）的 frontmatter 含 dsh YAML
+  解析器不接受的写法（上游数据瑕疵，逐字保留不修），dsh 会在发现时警告并跳过，
+  所以**可用技能 358** 个。
 - 上游另有给其他 agent 的转换树（`.codex/`、`.gemini/`、`.hermes/`、`.vibe/`），
   本插件不注册它们 —— 那是给别的工具用的副本，注册会造成目录重复。
 - 上游的 Claude Code 专属机制（`commands/` 斜杠命令、`.claude/agents/` 子代理、
   `.claude-plugin/` marketplace）原样保留但 dsh 不消费，详见交付报告 #37。
-- 2 个技能的 frontmatter 含 dsh YAML 解析器不接受的写法（上游数据瑕疵，逐字保留不修），
-  它们不会出现在目录里；完整清单见 `test/plugin.test.mjs`。
 
 ### License
 
@@ -108,10 +111,10 @@ and identify the top 3 scalability risks.
 
 ### Install
 
-Not published to npm yet — install from GitHub (on a fresh profile, pnpm may
-refuse the git-install `prepare` build; `dsh` prints the exact `allowBuilds`
-key to add under the profile's `pnpm-workspace.yaml`, then re-run the same
-command):
+Not published to npm yet — install from GitHub (git installs may hit pnpm's
+build-script allowlist; if refused, `dsh` prints the exact `allowBuilds` key to
+add under the profile's `pnpm-workspace.yaml`, then re-run the same command.
+This package has no build step, so most environments won't need it):
 
 ```bash
 dsh plugin --profile <name> add github:GongYuanCaiJi/dsh-claude-skills
@@ -133,15 +136,17 @@ directory is a registered root. Call any skill by name after install.
 
 ### Known boundaries
 
+- **Counts:** **362** is the upstream's claim (the canonical tree does hold 362
+  SKILL.md files). This plugin registers **361** of them (88 roots, exhaustive
+  coverage enforced by the test suite); 2 (`markdown-html/skills/design-system`,
+  `md-slides`) have frontmatter DSH's YAML parser rejects (upstream data quirk,
+  kept verbatim — DSH warns and skips them at discovery), so **358 are usable**.
 - Cross-tool conversion trees shipped by upstream (`.codex/`, `.gemini/`,
   `.hermes/`, `.vibe/`) are kept verbatim but **not registered** — they are
   copies for other agents and would duplicate the catalog.
 - Upstream's Claude Code-only mechanisms (`commands/` slash commands,
   `.claude/agents/` subagents, `.claude-plugin/` marketplace) are preserved
   as-is; DSH does not consume them. See delivery report #37.
-- 2 skills have frontmatter that DSH's YAML parser rejects (upstream data
-  quirk, kept verbatim); they will not appear in the catalog. Full list:
-  `test/plugin.test.mjs`.
 
 ### License
 
