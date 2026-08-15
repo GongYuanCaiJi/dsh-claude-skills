@@ -6,7 +6,11 @@ All skill content (SKILL.md bodies, Python tools, references, templates,
 docs) is preserved **verbatim** from the pinned upstream revision; only the
 DSH plugin layer (package.json, package-lock.json, cordis.patch.yml,
 test/plugin.test.mjs), this repo's README, THIRD_PARTY_NOTICES.md itself,
-and the LICENSE header were added by the port. See [README.md](./README.md).
+and the LICENSE header were added by the port. Three upstream-committed
+subtrees are **not shipped** (`engineering-team/playwright-pro/integrations/`,
+`engineering/skills/skill-tester/tests/`, `standards/documentation/`):
+upstream's own `.gitignore` marks them maintainer-only, and the port import
+follows it — see the full deviations list below. See [README.md](./README.md).
 
 ## Upstream
 
@@ -38,10 +42,11 @@ curl -L https://codeload.github.com/alirezarezvani/claude-skills/tar.gz/aa8d7788
 ## Verbatim files — SHA-256 spot checks
 
 The following files are shipped byte-for-byte from upstream (same revision
-above). `README.md` / `LICENSE` / `.gitignore` / `.github/workflows/` are
-intentional deviations, and `package.json` / `package-lock.json` /
+above). `README.md` / `LICENSE` / `.gitignore` / `.github/workflows/` / the
+upstream-gitignored `integrations/`, `tests/`, and `documentation/` subtrees
+are intentional deviations, and `package.json` / `package-lock.json` /
 `cordis.patch.yml` / `test/plugin.test.mjs` / `THIRD_PARTY_NOTICES.md` are
-port-added files that do not exist upstream (see below).
+port-added files that do not exist upstream (see the full list below).
 
 | SHA-256 | File |
 |---|---|
@@ -64,9 +69,9 @@ curl -sL https://raw.githubusercontent.com/alirezarezvani/claude-skills/aa8d7788
 
 ## Intentional deviations from upstream (the full list)
 
-Every deviation is required for the DSH plugin to work, is listed here, and
-is described in the delivery report for issue #37. Everything else is
-byte-identical to the pinned revision.
+Every deviation is deliberate, is listed here, and is described in the
+delivery report for issue #37. Everything else is byte-identical to the
+pinned revision.
 
 | Path | Deviation | Why it is required |
 |---|---|---|
@@ -78,3 +83,6 @@ byte-identical to the pinned revision.
 | `THIRD_PARTY_NOTICES.md` | Created by the port (this file) | Playbook N4: pins the upstream revision and hashes so the verbatim claim is self-verifiable. |
 | `.gitignore` | Playbook safety lines merged at top | Production-line requirement (`node_modules/`, `dist/`, `.serena/`, `*.log`, `.env*`, `*.tgz`, `.upstream/`); upstream's own rules kept below. |
 | `.github/workflows/` | Not shipped (12 files) | Upstream CI is wired to the upstream repo's own secrets/backends: `release.yml` auto-tags and auto-creates GitHub Releases on every CHANGELOG-touching push to `main`, `sync-codex-skills.yml` rewrites `main` content, `claude-*` workflows require the upstream maintainer's Claude Code subscription (OIDC). Running them on this repo would auto-publish the upstream's release versions under this org — misleading attribution. Skill content is unaffected. |
+| `engineering-team/playwright-pro/integrations/` | Not shipped (10 files: `browserstack-mcp/` + `testrail-mcp/` TypeScript MCP servers) | Excluded by upstream's own `.gitignore` (`integrations/` — "Generated integration files"); upstream commits them despite the ignore, and the port import follows the ignore. Consumed only by upstream's Claude Code `.mcp.json`, which dsh does not consume. |
+| `engineering/skills/skill-tester/tests/` | Not shipped (1 file: `test_security_scorer.py`) | Excluded by upstream's own `.gitignore` (`tests/` — "Pytest suite (maintainer quality gate; not user-consumable)"). |
+| `standards/documentation/` | Not shipped (2 files: `.gitkeep`, `documentation-standards.md`) | Excluded by upstream's own `.gitignore` (`documentation/` — "Internal dev artifacts (maintainer-only — hidden from cloners)"). |
