@@ -1,0 +1,115 @@
+# dsh-claude-skills — DSH bundle layer (#37)
+#
+# Registers the upstream alirezarezvani/claude-skills skill tree
+# (pinned commit aa8d778811a557a2c28ccadda4cf3d0bd028a4cc, marketplace v2.9.0)
+# as a repository-provided host `skill-filesystem` instance in the global
+# skill layer, so the skills load in every DSH surface.
+#
+# Why a dedicated instance: DSH's skill registry is layered; host rows and
+# repository plugins land in the global layer and every agent reads the
+# merged result. A distinct providerName avoids colliding with a preset's
+# default `filesystem` provider, and `includeDefaultRoots: false` keeps this
+# instance scanning ONLY this bundle's own roots (it must not re-scan
+# ~/.dsh/skills or project roots).
+#
+# Path resolution: in a bundle patch layer, baseUrl is the PROFILE directory
+# ($DSH_HOME/profiles/<name>/), and `dsh plugin add` installs this package
+# into <profile>/node_modules/dsh-claude-skills/, so each relative URL below
+# resolves to a `skills/` directory inside the installed bundle.
+#
+# Excluded by design (cross-tool conversion trees, not canonical content):
+# .codex/skills, .gemini/skills, .hermes/skills, .vibe/skills — those are
+# generated copies for other coding agents and would duplicate the catalog.
+- insert:
+    - id: skill-filesystem-claude-skills
+      name: '@deepseek-ai/dsh-skill-filesystem'
+      config:
+        providerName: claude-skills
+        includeDefaultRoots: false
+        customSkillDirs:
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/business-growth/skills/', baseUrl))  # 5 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/business-operations/skills/', baseUrl))  # 7 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/arquiteto-de-empresa/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/c-level-agents/skills/', baseUrl))  # 22 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/chief-ai-officer-advisor/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/chief-customer-officer-advisor/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/chief-data-officer-advisor/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/executive-mentor/skills/', baseUrl))  # 6 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/general-counsel-advisor/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/skills/', baseUrl))  # 34 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/c-level-advisor/vpe-advisor/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/commercial/skills/', baseUrl))  # 8 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/compliance-os/skills/', baseUrl))  # 9 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering-team/a11y-audit/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering-team/google-workspace-cli/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering-team/playwright-pro/skills/', baseUrl))  # 10 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering-team/self-improving-agent/skills/', baseUrl))  # 6 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering-team/skills/', baseUrl))  # 33 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering-team/snowflake-development/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/agent-harness/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/agenthub/skills/', baseUrl))  # 8 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/autoresearch-agent/skills/', baseUrl))  # 6 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/behuman/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/caveman/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/chaos-engineering/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/claude-coach/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/code-tour/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/collab-proof/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/data-quality-auditor/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/demo-video/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/docker-development/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/feature-flags-architect/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/grill-me/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/grill-with-docs/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/handoff/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/helm-chart-builder/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/karpathy-coder/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/kubernetes-operator/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/llm-cost-optimizer/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/llm-wiki/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/prompt-governance/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/security-guidance/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/skillopt-sleep/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/skills/', baseUrl))  # 38 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/slo-architect/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/statistical-analyst/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/terraform-patterns/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/universal-scraping-architect/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/workflow-builder/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/write-a-skill/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/engineering/zero-hallucination-coder/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/finance/business-investment-advisor/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/finance/skills/', baseUrl))  # 3 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/markdown-html/skills/', baseUrl))  # 5 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/marketing-skill/skills/', baseUrl))  # 47 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/marketing-skill/video-content-strategist/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/marketing/landing/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/product-team/agile-product-owner/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/product-team/apple-hig-expert/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/product-team/code-to-prd/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/product-team/research-summarizer/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/product-team/skills/', baseUrl))  # 13 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/andreessen/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/capture/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/deep-work/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/email/skills/', baseUrl))  # 2 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/fable-goal/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/handoff/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/meetings/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/reflect/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/roast/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/productivity/weekly-review/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/project-management/skills/', baseUrl))  # 9 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/ra-qm-team/compliance-team-eu-ai-act/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/ra-qm-team/compliance-team-iso42001/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/ra-qm-team/skills/', baseUrl))  # 17 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research-ops/skills/', baseUrl))  # 5 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/deep-research/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/dossier/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/grants/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/litreview/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/notebooklm/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/patent/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/pulse/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/research/skills/', baseUrl))  # 1 skills
+          - !!js process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/dsh-claude-skills/research/syllabus/skills/', baseUrl))  # 1 skills

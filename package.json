@@ -1,0 +1,43 @@
+{
+  "name": "dsh-claude-skills",
+  "version": "0.1.0",
+  "description": "362 个技能库（移植自 alirezarezvani/claude-skills）",
+  "license": "MIT",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GongYuanCaiJi/dsh-claude-skills.git"
+  },
+  "homepage": "https://github.com/GongYuanCaiJi/dsh-claude-skills#readme",
+  "bugs": {
+    "url": "https://github.com/GongYuanCaiJi/dsh-claude-skills/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "claude-code",
+    "skills",
+    "agents",
+    "plugins",
+    "marketplace"
+  ],
+  "author": "GongYuanCaiJi",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-skill-filesystem": "0.1.0-rc.6"
+  },
+  "devDependencies": {
+    "yaml": "^2.4.0"
+  }
+}

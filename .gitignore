@@ -1,3 +1,15 @@
+# dsh 移植產線安全規則（deepseek-harness port-playbook，票 #27）
+.upstream/
+node_modules/
+dist/
+.serena/
+.DS_Store
+*.tgz
+.env
+.env.*
+*.log
+
+# ===== 上游 alirezarezvani/claude-skills .gitignore（原樣保留）=====
 # IDE and OS
 .vscode
 .DS_Store
