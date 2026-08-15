@@ -22,6 +22,20 @@ follows it — see the full deviations list below. See [README.md](./README.md).
 | Marketplace version | `2.11.2` (`.claude-plugin/marketplace.json` `metadata.version`) |
 | Tarball (codeload, pinned commit) | `https://codeload.github.com/alirezarezvani/claude-skills/tar.gz/aa8d778811a557a2c28ccadda4cf3d0bd028a4cc` |
 
+## Bundled third-party components
+
+Five in-tree subtrees are third-party components, each carrying its own MIT
+LICENSE (license-compatible, retained in place — components themselves are
+untouched). Individually itemized per OSS eligibility criterion D1.
+
+| 元件路徑 (path) | 版權持有人 (copyright holder) | 授權 (license) | LICENSE 檔位置 (in-repo location) |
+|---|---|---|---|
+| `engineering-team/playwright-pro` | © 2026 Reza Rezvani | MIT | `engineering-team/playwright-pro/LICENSE` |
+| `engineering-team/self-improving-agent` | © 2026 Reza Rezvani | MIT | `engineering-team/self-improving-agent/LICENSE` |
+| `engineering/collab-proof` | © 2026 dong7812 | MIT | `engineering/collab-proof/LICENSE` |
+| `engineering/skillopt-sleep` | © 2026 Microsoft Corporation | MIT | `engineering/skillopt-sleep/LICENSE` |
+| `loop-library` | © 2026 Forward Future | MIT | `loop-library/LICENSE` |
+
 ## Tarball fingerprints (pinned revision)
 
 | Algorithm | Value |
